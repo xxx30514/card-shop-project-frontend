@@ -164,7 +164,6 @@ function changeMyHome2() {
 }
 changeMyHome2();
 console.log(myHome);
-console.log(myHome);
 
 //function (newV, old) == (newV, old)=>
 //TODO: ref可監聽基本型別 要監聽物件需要deep:true   reactive可監聽物件與陣列
