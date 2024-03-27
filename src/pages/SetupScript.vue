@@ -6,6 +6,7 @@
   <button @click="$q.dark.toggle()">change</button>
   <button @click="change">change2</button>
   <button @click="toIndex">To Index</button>
+  <a>To Index</a>
   <button @click="getAll">API Test</button>
   <a href="http://localhost:9000/">123</a>
   <hr />
@@ -15,7 +16,7 @@
   <button @click="changeName">改名</button>
   <button @click="changeAge">改年齡</button>
   <button @click="changePerson">改物件</button>
-  <h1 ref="data"></h1>
+  <h1 ref="data">123</h1>
   <button @click="showRef">Ref標籤</button>
   {{ $s.leftDrawerOpen }}
   {{ pagination.currentPage }}
@@ -23,6 +24,9 @@
     <td>{{ item.empId }}</td>
     <td>{{ item.empName }}</td>
   </tr>
+  <ul>
+    <li v-for="item in list" :key="item.id">{{ item.id }} {{ item.name }}</li>
+  </ul>
   <h1>分隔線</h1>
   <img class="col-md-12" :src="'http://localhost/image/No-Image-Placeholder.svg.png'" alt="..." />
   <tr v-for="(item, index) in dataList2.lists" :key="item.empId">
@@ -39,7 +43,7 @@ import { useRouter } from 'vue-router';
 import { useLayoutStore } from 'src/stores/layout';
 import axios from 'axios';
 import { api } from 'src/boot/axios';
-
+import { type Person, type Persons } from 'src/types/interface';
 let pagination = reactive({
   currentPage: 1, //當前頁
   pageSize: 10, //每頁顯示幾筆
@@ -54,7 +58,14 @@ let length = ref();
 const dataList = ref();
 const dataList2: any = reactive({ lists: [] });
 //const dataList3: any = reactive([]);
-
+const personList: Persons = [{ id: 1, name: '123', age: 10 }];
+const personList2 = reactive<Persons>([{ id: 1, name: '123', age: 10 }]);
+//接收父組件的props
+//defineProps(['list']);
+//接收父組件的props並限制型別
+//defineProps<{ list: Persons }>();
+//接收父組件的props+限制型別+限制必要性+指定預設值 若父組件沒傳遞list props 會使用預設值
+withDefaults(defineProps<{ list?: Persons }>(), { list: () => [{ id: 1, name: '老五', age: 50 }] });
 function getAll() {
   //查詢所有資料並進行分頁
   param.value = '?query';
@@ -79,8 +90,21 @@ function getAll() {
       length.value = response.data.data.length;
       window.sessionStorage.setItem('name', pagination.empName);
       window.sessionStorage.setItem('age', pagination.empAge);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 }
+/*
+async function getUser(){
+    try{
+        const response = await axios.get('');
+        console.log(response);
+    }catch(error){
+        console.log(error)
+    }
+}
+*/
 getAll();
 const $q = useQuasar();
 const $router = useRouter();
