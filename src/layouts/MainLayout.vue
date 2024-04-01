@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="$s.toggleLeftDraw"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="$s.toggleLeftDraw" />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
 
@@ -21,16 +14,28 @@
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
 
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
     <q-page-container>
       {{ leftDrawerOpen }}
+      <router-link to="/hook" active-class="bg-positive">hook.vue</router-link>
+      <router-link to="/set" active-class="bg-positive">set.vue</router-link>
+      <router-link to="/hook" active-class="bg-positive">
+        <q-btn label="hook" outline color="primary" no-caps />
+      </router-link>
+      <router-link :to="{ path: '/set' }" active-class="bg-positive">
+        <q-btn label="set" outline color="primary" no-caps />
+      </router-link>
+      <router-link :to="{ name: 'hook' }" active-class="bg-positive">
+        <q-btn label="hook2" outline color="primary" no-caps />
+      </router-link>
+      <q-btn
+        to="/hook"
+        :class="{ 'bg-light-blue text-yellow-10': $route.name === 'hook' }"
+        label="Link to hook"
+      ></q-btn>
       <router-view />
     </q-page-container>
   </q-layout>

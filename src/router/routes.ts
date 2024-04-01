@@ -1,3 +1,4 @@
+import path from 'path';
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
@@ -9,6 +10,11 @@ const routes: RouteRecordRaw[] = [
       { path: 'com', component: () => import('pages/CompositionAPI.vue') },
       { path: 'set', component: () => import('pages/SetupScript.vue') },
       { path: 'hook', component: () => import('pages/LifecycleHooks.vue'), meta: { title: 'Life' }, name: 'hook' },
+      {
+        path: 'news',
+        component: () => import('pages/NewsPage.vue'),
+        children: [{ path: 'detail', component: () => import('pages/NewsDetail.vue') }],
+      },
     ],
   },
 

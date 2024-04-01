@@ -28,7 +28,7 @@
     <li v-for="item in list" :key="item.id">{{ item.id }} {{ item.name }}</li>
   </ul>
   <h1>分隔線</h1>
-  <img class="col-md-12" :src="'http://localhost/image/No-Image-Placeholder.svg.png'" alt="..." />
+  <img class="col-md-2" :src="'src/assets/No-Image-Placeholder.svg.png'" alt="..." />
   <tr v-for="(item, index) in dataList2.lists" :key="item.empId">
     <td>{{ item.empId }}</td>
     <td>{{ item.empName }}</td>
@@ -64,6 +64,7 @@ const personList2 = reactive<Persons>([{ id: 1, name: '123', age: 10 }]);
 //defineProps(['list']);
 //接收父組件的props並限制型別
 //defineProps<{ list: Persons }>();
+//defineProps<{ list?: Persons }>();
 //接收父組件的props+限制型別+限制必要性+指定預設值 若父組件沒傳遞list props 會使用預設值
 withDefaults(defineProps<{ list?: Persons }>(), { list: () => [{ id: 1, name: '老五', age: 50 }] });
 function getAll() {
@@ -303,8 +304,9 @@ let data = ref();
 function showRef() {
   console.log(data.value);
 }
+let c = ref(1);
 //ref 用於組件上  取得組件物件實例 父組件要取得子組件內容 需要defineExpose
-defineExpose({ data, count });
+defineExpose({ data, count, c });
 </script>
 
 <style scoped>
