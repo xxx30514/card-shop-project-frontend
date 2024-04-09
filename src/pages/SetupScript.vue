@@ -25,7 +25,7 @@
     <td>{{ item.empName }}</td>
   </tr>
   <ul>
-    <li v-for="item in list" :key="item.id">{{ item.id }} {{ item.name }}</li>
+    <li v-for="item in list" :key="item.id">ID:{{ item.id }} 姓名:{{ item.name }} 年齡:{{ item.age }}</li>
   </ul>
   <h1>分隔線</h1>
   <img class="col-md-2" :src="'src/assets/No-Image-Placeholder.svg.png'" alt="..." />
@@ -60,8 +60,10 @@ const dataList2: any = reactive({ lists: [] });
 //const dataList3: any = reactive([]);
 const personList: Persons = [{ id: 1, name: '123', age: 10 }];
 const personList2 = reactive<Persons>([{ id: 1, name: '123', age: 10 }]);
-//接收父組件的props
+//接收父組件的props list
 //defineProps(['list']);
+//接收父組件的props 並保存
+//let x = defineProps(['list']);
 //接收父組件的props並限制型別
 //defineProps<{ list: Persons }>();
 //defineProps<{ list?: Persons }>();

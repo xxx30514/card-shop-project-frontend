@@ -1,5 +1,6 @@
 <template>
   <router-view />
+  //傳遞props給子組件
   <setup-script :list="personList" ref="data1"></setup-script>
   <button @click="test">測試</button>
   <!-- <LifecycleHooks /> -->
@@ -11,6 +12,7 @@ import LifecycleHooks from './pages/LifecycleHooks.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { useMeta } from 'quasar';
 import { type Persons } from 'src/types/interface';
+//傳遞props給子組件
 let personList = reactive<Persons>([{ id: 1, name: '小王', age: 10 }]);
 let data1 = ref();
 

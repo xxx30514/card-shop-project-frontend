@@ -32,6 +32,7 @@
         <q-btn label="hook2" outline color="primary" no-caps />
       </router-link>
       <q-btn
+        replace
         to="/hook"
         :class="{ 'bg-light-blue text-yellow-10': $route.name === 'hook' }"
         label="Link to hook"
