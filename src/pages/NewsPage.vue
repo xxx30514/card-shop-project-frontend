@@ -3,6 +3,7 @@
     <li v-for="news in newsList" :key="news.id">
       <!--query傳參數 第一種方法 -->
       <router-link :to="`/news/detail?id=${news.id}&title=${news.title}`">{{ news.title }}</router-link>
+      <button @click="showNewsDetail(news)">檢視詳細內容</button>
       <!-- query傳參數 第二種方法 -->
       <router-link
         :to="{
@@ -38,14 +39,29 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
-
+import { reactive, onMounted } from 'vue';
+import { RouterLink, RouterView, useRouter } from 'vue-router';
+//程式化導航
+const router = useRouter();
 const newsList = reactive([
-  { id: 1, title: 123 },
-  { id: 2, title: 456 },
-  { id: 3, title: 789 },
+  { id: 1, title: '123' },
+  { id: 2, title: '456' },
+  { id: 3, title: '789' },
 ]);
+interface NewsInter {
+  id: number;
+  title: string;
+}
+//符合某種條件時跳轉頁面 使用程式化導航
+function showNewsDetail(news: NewsInter) {
+  //push or replace 與RouterLink的to寫法相同
+  router.push({ path: '/news/detail', query: { id: news.id, title: news.title } });
+}
+onMounted(() => {
+  // setTimeout(() => {
+  //   router.push('/news');
+  // }, 3000);
+});
 </script>
 
 <style scoped>

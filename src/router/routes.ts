@@ -1,4 +1,3 @@
-import path from 'path';
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
@@ -45,6 +44,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
+  },
+  // 路由的重新導向
+  {
+    path: '/456',
+    redirect: '/news',
   },
 ];
 export default routes;
