@@ -18,7 +18,10 @@
   <button @click="changePerson">改物件</button>
   <h1 ref="data">123</h1>
   <button @click="showRef">Ref標籤</button>
-  {{ $s.leftDrawerOpen }}
+  Store:{{ $s.leftDrawerOpen }} Store2:{{ leftDrawerOpen }}
+  <button @click="changeStore">修改</button>
+  <button @click="changeStorePatch">批量修改</button>
+  <button @click="toggleLeftDraw">action修改</button>
   {{ pagination.currentPage }}
   <tr v-for="(item, index) in dataList" :key="item.empId">
     <td>{{ item.empId }}</td>
@@ -44,6 +47,7 @@ import { useLayoutStore } from 'src/stores/layout';
 import axios from 'axios';
 import { api } from 'src/boot/axios';
 import { type Person, type Persons } from 'src/types/interface';
+import { storeToRefs } from 'pinia';
 let pagination = reactive({
   currentPage: 1, //當前頁
   pageSize: 10, //每頁顯示幾筆
@@ -112,6 +116,27 @@ getAll();
 const $q = useQuasar();
 const $router = useRouter();
 const $s = useLayoutStore();
+console.log($s.leftDrawerOpen);
+//第一種修改方式
+function changeStore() {
+  $s.leftDrawerOpen = !$s.leftDrawerOpen;
+}
+//第二種修改方式 批量修改
+function changeStorePatch() {
+  $s.$patch({ headOpen: !$s.headOpen, leftDrawerOpen: !$s.leftDrawerOpen });
+}
+//第三種修改方式 action
+function toggleLeftDraw() {
+  $s.toggleLeftDraw();
+}
+//響應式解構store
+const { leftDrawerOpen } = storeToRefs($s);
+//store的監聽器
+$s.$subscribe((mutate, state) => {
+  console.log('資料發生變化', mutate, state);
+  localStorage.setItem('flag', JSON.stringify(state.leftDrawerOpen));
+});
+//若需要用到this $s.$subscribe(function () {});
 /*TODO: codingStyle
 1.import 組件ex. const $q = useQuasar();
 2.自訂變數

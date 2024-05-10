@@ -1,0 +1,2 @@
+路由組件 放在pages/views資料夾
+一般組件放在 components資料夾

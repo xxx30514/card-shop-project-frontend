@@ -38,17 +38,30 @@ const routes: RouteRecordRaw[] = [
       { path: 'set', component: () => import('pages/SetupScript.vue') },
     ],
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
+    path: '/father',
+    component: () => import('components/FatherComponent.vue'),
+    //children: [{ path: 'ref', component: () => import('components/$refs_$parent/FatherComponent.vue') }],
+  },
+  {
+    path: '/attrs/father',
+    component: () => import('components/attrs/FatherComponent.vue'),
+    //children: [{ path: 'child', component: () => import('components/ChildComponent.vue') }],
+  },
+  {
+    path: '/ref',
+    component: () => import('components/$refs_$parent/FatherComponent.vue'),
   },
   // 路由的重新導向
   {
     path: '/456',
     redirect: '/news',
+  },
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '/:catchAll(.*)*',
+    component: () => import('pages/ErrorNotFound.vue'),
   },
 ];
 export default routes;

@@ -37,6 +37,14 @@
         :class="{ 'bg-light-blue text-yellow-10': $route.name === 'hook' }"
         label="Link to hook"
       ></q-btn>
+      <q-btn
+        :to="{
+          name: 'detail',
+          //query: { id: news.id, title: news.title },
+        }"
+        :class="{ 'bg-light-blue text-yellow-10': $route.name === 'detail' }"
+        label="Link to detail"
+      ></q-btn>
       <router-view />
     </q-page-container>
   </q-layout>
