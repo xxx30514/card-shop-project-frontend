@@ -26,6 +26,10 @@ const routes: RouteRecordRaw[] = [
           },
         ],
       },
+      { path: 'provide', component: () => import('pages/provide_inject/FatherComponent.vue') },
+      { path: 'pinia', component: () => import('pages/PiniaPage.vue') },
+      { path: 'slot', component: () => import('pages/slot/FatherComponent.vue') },
+      { path: 'scoped', component: () => import('pages/scoped_slot/FatherComponent.vue') },
     ],
   },
 

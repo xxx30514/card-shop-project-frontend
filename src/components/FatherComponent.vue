@@ -14,9 +14,9 @@
 import { ref } from 'vue';
 import ChildComponent from 'components/ChildComponent.vue';
 import ChildComponent2 from './ChildComponent2.vue';
-
 const car = ref('mazda');
 const toy = ref('');
+
 //儲存子組件傳遞的props toy
 function getToy(value: string) {
   toy.value = value;

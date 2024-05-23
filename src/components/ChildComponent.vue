@@ -14,14 +14,14 @@
 import { ref, Ref } from 'vue';
 import emitter from 'src/utils/emitter';
 import mitt from 'mitt';
-
 const toy = ref('四驅車');
 const toy2 = ref('戰鬥陀螺');
 const type = mitt<{
   sendValue: string;
 }>();
 //接收父組件的props
-defineProps(['car', 'sendToy']);
+//defineProps(['car', 'sendToy']);
+defineProps<{ car: string; sendToy: any }>();
 //自定義事件傳遞props給父組件
 const emit = defineEmits(['send-toy']);
 </script>
