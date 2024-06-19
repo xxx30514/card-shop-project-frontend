@@ -56,6 +56,14 @@ const routes: RouteRecordRaw[] = [
     path: '/ref',
     component: () => import('components/$refs_$parent/FatherComponent.vue'),
   },
+  {
+    path: '/custom',
+    component: () => import('components/CustomRef.vue'),
+  },
+  {
+    path: '/teleport',
+    component: () => import('pages/TeleportPage.vue'),
+  },
   // 路由的重新導向
   {
     path: '/456',

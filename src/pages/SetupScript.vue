@@ -31,7 +31,8 @@
     <li v-for="item in list" :key="item.id">ID:{{ item.id }} 姓名:{{ item.name }} 年齡:{{ item.age }}</li>
   </ul>
   <h1>分隔線</h1>
-  <img class="col-md-2" :src="'src/assets/No-Image-Placeholder.svg.png'" alt="..." />
+  <img class="col-md-2" src="src/assets/No-Image-Placeholder.svg.png" alt="..." />
+  <img class="col-md-2" src="../../public/favicon.ico" alt="..." />
   <tr v-for="(item, index) in dataList2.lists" :key="item.empId">
     <td>{{ item.empId }}</td>
     <td>{{ item.empName }}</td>
