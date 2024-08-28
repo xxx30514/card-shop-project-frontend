@@ -31,8 +31,8 @@
     <li v-for="item in list" :key="item.id">ID:{{ item.id }} 姓名:{{ item.name }} 年齡:{{ item.age }}</li>
   </ul>
   <h1>分隔線</h1>
-  <img class="col-md-2" src="src/assets/No-Image-Placeholder.svg.png" alt="..." />
-  <img class="col-md-2" src="../../public/favicon.ico" alt="..." />
+  <img class="col-md-2" src="~assets/No-Image-Placeholder.png" alt="..." />
+  <img class="col-md-2" src="/favicon.ico" alt="..." />
   <tr v-for="(item, index) in dataList2.lists" :key="item.empId">
     <td>{{ item.empId }}</td>
     <td>{{ item.empName }}</td>
@@ -335,6 +335,19 @@ function showRef() {
 let c = ref(1);
 //ref 用於組件上  取得組件物件實例 父組件要取得子組件內容 需要defineExpose
 defineExpose({ data, count, c });
+//ts可定義this類型
+interface Obj {
+  user: number[];
+  add: (this: Obj, num: number) => void;
+}
+let obj: Obj = {
+  user: [1, 2, 3],
+  add(this: Obj, num: number) {
+    this.user.push(num);
+  },
+};
+obj.add(4);
+console.log(obj.user);
 </script>
 
 <style scoped>

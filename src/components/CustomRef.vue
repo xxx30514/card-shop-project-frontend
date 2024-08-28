@@ -9,9 +9,9 @@
 </template>
 <script setup lang="ts">
 import { customRef } from 'vue';
-import useMsg, { abc } from 'src/hooks/useMsg';
+import useMsg, { abc } from 'src/composables/useMsg';
 let { msg, test } = useMsg('123', 1000);
-
+//customRef 可控制資料更新頻率 達到防抖效果 track() trigger()
 //const { msg } = abc('1234', 1000);
 
 // let initValue: string = '你好';

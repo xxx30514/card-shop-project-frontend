@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
 import { useMeta } from 'quasar';
-import useCount from 'src/hooks/useCount';
+import useCount from 'src/composables/useCount';
 const metaData = {
   // sets document title
   title: 'Index Page',

@@ -32,7 +32,6 @@ const routes: RouteRecordRaw[] = [
       { path: 'scoped', component: () => import('pages/scoped_slot/FatherComponent.vue') },
     ],
   },
-
   {
     path: '/123',
     component: () => import('layouts/MainLayout2.vue'),
