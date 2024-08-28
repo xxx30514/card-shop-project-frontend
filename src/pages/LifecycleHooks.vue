@@ -1,6 +1,7 @@
 <template>
   <h1>{{ sum }}</h1>
   <button @click="add">+1</button>
+  <button @click="add">+1</button>
 </template>
 <script setup lang="ts">
 import { ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
