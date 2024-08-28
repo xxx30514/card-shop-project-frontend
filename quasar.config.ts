@@ -218,7 +218,7 @@ export default configure((/* ctx */) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'card-store-project',
+        appId: 'card-shop-project',
       },
     },
 
