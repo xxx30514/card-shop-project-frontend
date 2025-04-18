@@ -39,6 +39,7 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'com', component: () => import('pages/CompositionAPI.vue') },
       { path: 'set', component: () => import('pages/SetupScript.vue') },
+      { path: 'cart', component: () => import('pages/CartPage.vue') },
     ],
   },
   {

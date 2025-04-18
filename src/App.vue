@@ -1,8 +1,8 @@
 <template>
   <router-view />
   <!-- 傳遞props給子組件 -->
-  <setup-script :list="personList" ref="data1"></setup-script>
-  <button @click="test">測試</button>
+  <!-- <setup-script :list="personList" ref="data1"></setup-script> -->
+  <!-- <button @click="test">測試</button> -->
   <!-- <LifecycleHooks /> -->
 </template>
 

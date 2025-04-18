@@ -138,7 +138,7 @@ $s.$subscribe((mutate, state) => {
   localStorage.setItem('flag', JSON.stringify(state.leftDrawerOpen));
 });
 //若需要用到this $s.$subscribe(function () {});
-/*TODO: codingStyle
+/*TODO: codingStyle順序
 1.import 組件ex. const $q = useQuasar();
 2.自訂變數
 3.computed
@@ -155,34 +155,24 @@ const double = computed(() => {
   return count.value * 2;
 });
 const color = ref('red');
-const flag = ref(true);
-console.log('是否開啟黑暗模式' + $q.dark.isActive);
+const flag = ref(false);
+console.log('是否開啟深色模式' + $q.dark.isActive);
 function mode() {
   // localStorage 只能儲存字串 JSON.stringify=>物件轉字串   JSON.parse=>字串轉物件
   const mode = window.localStorage.getItem('mode');
-  if (mode) {
+  if (mode !== null) {
     flag.value = JSON.parse(mode);
-    console.log('flag值' + flag.value);
-    // $q.dark.set(mode);
-    // $q.dark.set(flag.value);
+    console.log('深色模式開關狀態:' + flag.value);
+    $q.dark.set(flag.value);
   }
 }
 function change() {
-  // $q.dark.toggle();
-  console.log($q.dark.isActive);
-  if ($q.dark.isActive === false) {
-    $q.dark.set(true);
-    // flag.value = true;
-    flag.value = true;
-    console.log(flag.value + '00');
-    localStorage.setItem('mode', JSON.stringify(flag.value));
-    console.log(Boolean(localStorage.getItem('mode')));
-  } else {
-    $q.dark.set(false);
-    // flag.value = false;
-    flag.value = false;
-    localStorage.setItem('mode', JSON.stringify(flag.value));
-  }
+  const newMode = !$q.dark.isActive; // 反轉目前模式
+  $q.dark.set(newMode);
+  flag.value = newMode; // 更新狀態
+  // 儲存更新後的深色模式狀態到 localStorage
+  localStorage.setItem('mode', JSON.stringify(flag.value));
+  console.log('深色模式已更新:', flag.value);
 }
 computed({
   get() {
@@ -262,13 +252,6 @@ watch(
 );
 onMounted(() => {
   mode();
-  $q.dark.set(flag.value);
-  // const mode = window.localStorage.getItem("mode");
-  // if (mode) {
-  //   flag.value = JSON.parse(mode);
-  //   // $q.dark.set(mode);
-  //   $q.dark.set(flag.value);
-  // }
 });
 const person = ref({ name: '小明', age: 20 });
 function changeName() {
