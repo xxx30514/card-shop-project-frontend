@@ -21,7 +21,7 @@ const type = mitt<{
 }>();
 //接收父組件的props
 //defineProps(['car', 'sendToy']);
-defineProps<{ car: string; sendToy: any }>();
+defineProps<{ car: string; sendToy: (toy: string) => void }>();
 //自定義事件傳遞props給父組件
 const emit = defineEmits(['send-toy']);
 </script>

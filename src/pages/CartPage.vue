@@ -53,11 +53,18 @@
   </q-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useMeta } from 'quasar';
 // 定義資料
-const cartItems = ref([
+interface Item {
+  productName: string;
+  number: number;
+  amount: number;
+  stock: number;
+  selected: boolean;
+}
+const cartItems = ref<Item[]>([
   { productName: '商品 1', number: 2, amount: 500, stock: 10, selected: true },
   { productName: '商品 2', number: 1, amount: 300, stock: 5, selected: false },
   { productName: '商品 3', number: 1, amount: 150, stock: 0, selected: true },
@@ -68,11 +75,11 @@ const totalPrice = computed(() => {
   return cartItems.value.reduce((total, item) => (item.selected ? total + item.amount : total), 0);
 });
 // 方法: 切換商品選擇狀態
-function toggleItemSelection(item) {
+function toggleItemSelection(item: Item) {
   item.selected = !item.selected;
 }
 // 方法: 移除商品
-function removeItem(index) {
+function removeItem(index: number) {
   cartItems.value.splice(index, 1);
 }
 // 方法: 清空購物車

@@ -21,7 +21,7 @@ export default function (initValue: string, delayTime: number) {
   });
   return { msg, test };
 }
-function abc(initValue: string, delayTime: number) {
+export function abc(initValue: string, delayTime: number) {
   let timer: NodeJS.Timeout;
   const msg = customRef((track, trigger) => {
     return {
@@ -42,4 +42,4 @@ function abc(initValue: string, delayTime: number) {
   });
   return { msg };
 }
-export { abc };
+//export { abc };

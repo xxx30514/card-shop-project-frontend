@@ -46,7 +46,7 @@ import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import { useLayoutStore } from 'src/stores/layout';
 import axios from 'axios';
-import { api } from 'src/boot/axios';
+import { api } from 'src/api/axios';
 import { type Person, type Persons } from 'src/types/interface';
 import { storeToRefs } from 'pinia';
 let pagination = reactive({
