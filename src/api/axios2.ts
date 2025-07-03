@@ -45,37 +45,27 @@ api.interceptors.response.use(
       Swal.fire('錯誤', '請求逾時，請稍後再試', 'error');
     } else if (error.response) {
       // 這邊新增對 HTTP 狀態碼 401 的判斷
-      if (error.response.status === 401) {
-        Swal.fire({
-          icon: 'warning',
-          title: '未登入',
-          text: '請先登入',
-          confirmButtonText: '前往登入',
-        });
-        return Promise.reject(new Error('未登入'));
-      }
-
-      const { errorCode, errorDescription, errors } = error.response.data || {};
-      // if (errors && Object.keys(errors).length > 0) {
-      //   const msg = Object.entries(errors)
-      //     .map(([field, msg]) => `<li><strong>${field}</strong>: ${msg}</li>`)
-      //     .join('');
-
+      // if (error.response.status === 401) {
       //   Swal.fire({
-      //     icon: 'error',
-      //     title: '表單驗證錯誤',
-      //     html: `<ul style="text-align: left; margin: 0; padding-left: 20px;">${msg}</ul>`,
+      //     icon: 'warning',
+      //     title: '未登入',
+      //     text: '請先登入',
+      //     confirmButtonText: '前往登入',
       //   });
+      //   return Promise.reject(new Error('未登入'));
       // }
+      const { errorCode, errorDescription, errors } = error.response.data || {};
       if (errors && Object.keys(errors).length > 0) {
         const msg = Object.entries(errors)
-          .map(([field, msg]) => `${field}: ${msg}`)
-          .join('<br />');
+          .map(([field, msg]) => `<li><strong>${field}</strong>: ${msg}</li>`)
+          .join('');
         Swal.fire({
           icon: 'error',
-          title: '表單驗證錯誤', //另外格式 還未測試
-          html: msg,
+          title: '表單驗證錯誤',
+          html: `<ul style="text-align: left; margin: 0; padding-left: 20px;">${msg}</ul>`,
         });
+      } else if (errorCode === 306) {
+        Swal.fire('錯誤', error.response.data.error, 'error');
       } else if (errorDescription) {
         Swal.fire('錯誤', errorDescription, 'error');
       } else {

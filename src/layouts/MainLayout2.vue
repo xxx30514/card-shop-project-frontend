@@ -153,10 +153,11 @@
     <q-footer bordered class="bg-teal-14 text-blue-grey-10">
       <q-toolbar>
         <q-toolbar-title>
+          <!-- <q-toolbar-title class="text-center"> -->
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
           </q-avatar>
-          <div>Title</div>
+          <span class="q-ml-sm">Title</span>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>

@@ -4,6 +4,23 @@
     <modal-component></modal-component>
     <button @click="test">測試失敗</button>
     <button @click="getEmail">測試</button>
+    <button @click="EmailActive">測試驗證</button>
+    <div>
+      <form @submit.prevent="handleSubmit">
+        <div>
+          <label for="email">帳號:</label>
+          <input type="email" id="email" v-model="account" placeholder="請輸入帳號" />
+        </div>
+
+        <div>
+          <label for="password">密碼:</label>
+          <input type="password" id="password" v-model="password" placeholder="請輸入密碼" />
+        </div>
+
+        <button type="submit">登入</button>
+        {{ token }}
+      </form>
+    </div>
   </q-page>
 </template>
 
@@ -13,7 +30,7 @@ import ExampleComponent from 'components/ExampleComponent.vue';
 import ModalComponent from 'components/ModalComponent.vue';
 import { ref } from 'vue';
 import { api } from 'src/api/axios2';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 const todos = ref<Todo[]>([
   {
@@ -37,10 +54,14 @@ const todos = ref<Todo[]>([
     content: 'ct5',
   },
 ]);
+
+const account = ref<string>('');
+const password = ref<string>('');
 const meta = ref<Meta>({
   totalCount: 1200,
 });
 const router = useRouter();
+const route = useRoute();
 const email = ref('1234@meatkay.com.tw');
 const test = async () => {
   try {
@@ -67,7 +88,10 @@ const test = async () => {
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push('/login');
+          const redirectPath = router.currentRoute.value.fullPath;
+          router.push({ path: '/login', query: { redirect: redirectPath } });
+          console.log(redirectPath);
+          //router.push('/login');
         }
       });
     }
@@ -90,6 +114,45 @@ const getEmail = async () => {
     console.log(res.data.msg);
     console.log(res.data.code);
     console.log(res.status);
+  } catch (err: unknown) {
+    console.log(err);
+  }
+};
+const EmailActive = async () => {
+  try {
+    const res = await api.get('/auth/activate-account?token=oIvVXk');
+    console.log(res);
+    console.log(res.data);
+    console.log(res.data.data);
+    console.log(res.data.data.id);
+    console.log(res.data.msg);
+    console.log(res.data.code);
+    console.log(res.status);
+  } catch (err: unknown) {
+    console.log(err);
+  }
+};
+const token = ref<string>('');
+const handleSubmit = async () => {
+  try {
+    const payload = {
+      email: account.value,
+      password: password.value,
+    };
+    const res = await api.post('/auth/login', payload);
+    console.log(res);
+    console.log(res.data);
+    console.log(res.data.data);
+    console.log(res.data.data.id);
+    console.log(res.data.msg);
+    console.log(res.data.code);
+    console.log(res.status);
+    token.value = res.data.data;
+    //const redirectPath = route.query.redirect || '/123';
+    const redirectPath = router.currentRoute.value.fullPath || '/123';
+    console.log(router.currentRoute.value.fullPath);
+    router.push(redirectPath as string);
+    // router.push({ path: '/login', query: { redirect: redirectPath } });
   } catch (err: unknown) {
     console.log(err);
   }
