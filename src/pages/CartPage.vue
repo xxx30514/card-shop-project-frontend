@@ -1,8 +1,9 @@
 <template>
   <q-page>
     <q-card class="q-mb-md">
-      <q-card-section>
+      <q-card-section class="row items-center justify-between">
         <div class="text-h6">購物車</div>
+        <q-checkbox v-model="selectAll" label="全選 / 取消全選" />
       </q-card-section>
     </q-card>
 
@@ -105,6 +106,17 @@ const totalPrice = computed(() => Math.round(subtotal.value));
 function toggleItemSelection(item: Item) {
   item.selected = !item.selected;
 }
+// 方法 :全選/取消全選
+const selectAll = computed({
+  get() {
+    return cartItems.value.length > 0 && cartItems.value.every((item) => item.selected);
+  },
+  set(val: boolean) {
+    cartItems.value.forEach((item) => {
+      item.selected = val;
+    });
+  },
+});
 // 方法: 移除商品
 function removeItem(index: number) {
   cartItems.value.splice(index, 1);
