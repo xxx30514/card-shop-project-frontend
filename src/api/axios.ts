@@ -1,12 +1,20 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { routerInstance } from 'src/router';
+
 export const api = axios.create({
   baseURL: 'http://localhost/',
   timeout: 10000,
 });
 
 const goToLogin = () => {
+  // 1. 取得當前路徑
+  const currentPath = routerInstance?.currentRoute.value.path;
+  // 2. 判斷是否已經在登入頁 (避免重複跳轉)
+  if (currentPath === '/login') {
+    console.log('已經在登入頁，取消跳轉');
+    return;
+  }
   // const redirectPath = window.location.pathname + window.location.search;
   // window.location.href = `/login?redirect=${encodeURIComponent(redirectPath)}`;
   console.log(routerInstance);
@@ -15,11 +23,12 @@ const goToLogin = () => {
     routerInstance.push({ path: '/login', query: { redirect: redirectPath } });
     console.log('正在跳轉至登入頁:', redirectPath);
   } else {
-    // 備案：如果 router 真的沒初始化，強制轉址
+    // 備案：如果router初始化失敗，強制跳轉
     console.warn('Router 尚未初始化，強制使用 window.location');
     window.location.href = '/login';
   }
 };
+
 api.interceptors.response.use(
   (response) => {
     const res = response.data;
