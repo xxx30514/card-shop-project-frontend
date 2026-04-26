@@ -1,96 +1,127 @@
-import axios, { AxiosInstance } from 'axios';
-import { Notify } from 'quasar'; // Quasar 通知元件
+import axios from 'axios';
 import Swal from 'sweetalert2';
-
-const instance: AxiosInstance = axios.create({
+import { routerInstance } from 'src/router';
+export const api = axios.create({
   baseURL: 'http://localhost/',
-  timeout: 10000, // 設定為 10 秒
+  timeout: 10000,
 });
 
-// 請求攔截器（可加上 token 等）
-// instance.interceptors.request.use(
-//   config => {
-//     const token = localStorage.getItem('token');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   error => Promise.reject(error)
-// );
-
-//回應攔截器（錯誤提示處理）
-instance.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    if (error.code === 'ECONNABORTED') {
-      Notify.create({
-        type: 'negative',
-        message: '請求逾時，請稍後再試',
-        timeout: 3000,
-      });
-    } else if (error.response) {
-      Notify.create({
-        type: 'negative',
-        message: `伺服器錯誤：${error.response.status}`,
-        timeout: 3000,
-      });
-    } else {
-      Notify.create({
-        type: 'negative',
-        message: '網路錯誤，請檢查連線',
-        timeout: 3000,
-      });
-    }
-
-    return Promise.reject(error);
-  },
-);
-
-// 🔐 請求攔截器（加上 token，可選）
-instance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-// 🛡️ 回應攔截器（處理後端格式 + 錯誤提示）
-instance.interceptors.response.use(
+const goToLogin = () => {
+  // const redirectPath = window.location.pathname + window.location.search;
+  // window.location.href = `/login?redirect=${encodeURIComponent(redirectPath)}`;
+  console.log(routerInstance);
+  if (routerInstance) {
+    const redirectPath = routerInstance.currentRoute.value.fullPath;
+    routerInstance.push({ path: '/login', query: { redirect: redirectPath } });
+    console.log('正在跳轉至登入頁:', redirectPath);
+  } else {
+    // 備案：如果 router 真的沒初始化，強制轉址
+    console.warn('Router 尚未初始化，強制使用 window.location');
+    window.location.href = '/login';
+  }
+};
+api.interceptors.response.use(
   (response) => {
     const res = response.data;
-    // 只接受 code === "200" 的成功結果
-    if (res.code === '200') {
-      if (res.msg) {
-        Swal.fire({
-          icon: 'success',
-          title: '成功',
-          text: res.msg,
-          timer: 2000,
-          showConfirmButton: false,
-        });
+    if (res && typeof res === 'object' && 'code' in res) {
+      switch (res.code) {
+        case '200':
+          if (res.msg) {
+            Swal.fire({
+              icon: 'success',
+              title: '成功',
+              text: res.msg,
+              timer: 3000,
+              showConfirmButton: false,
+            });
+          }
+          return response; //回傳整個 response
+        case '400':
+          Swal.fire('錯誤', res.msg || '操作失敗', 'error');
+          return Promise.reject(new Error(res.msg || '操作失敗'));
+        case '401':
+          Swal.fire({
+            icon: 'warning',
+            title: '未登入',
+            text: '請先登入',
+            confirmButtonText: '前往登入',
+            cancelButtonText: '取消',
+            showCancelButton: true,
+            showCloseButton: true,
+            customClass: {
+              // confirmButton: 'q-btn q-btn--standard text-white bg-primary',
+              cancelButton: 'text-white bg-negative',
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              goToLogin();
+            }
+          });
+          console.log('攔截器 401 觸發');
+          console.log(res.code);
+          console.log(res.msg);
+          return Promise.reject(new Error('未登入'));
+        default:
+          Swal.fire('錯誤', res.msg || '未知錯誤', 'error');
+          return Promise.reject(new Error(res.msg || '未知錯誤'));
       }
-      return res.data; // 直接回傳真正的資料
-    } else {
-      Swal.fire('錯誤', res.msg || '操作失敗', 'error');
-      return Promise.reject(new Error(res.msg || '操作失敗'));
     }
+    return response;
   },
   (error) => {
-    // Axios 錯誤（非後端 code）
     if (error.code === 'ECONNABORTED') {
       Swal.fire('錯誤', '請求逾時，請稍後再試', 'error');
     } else if (error.response) {
-      Swal.fire('錯誤', `伺服器錯誤 (${error.response.status})`, 'error');
+      // 這邊新增對 HTTP 狀態碼 401 的判斷
+      if (error.response.status === 401) {
+        const isLoginPage = window.location.pathname === '/login';
+        const isBadCredentials = error.response.errorCode === 304;
+        if (isLoginPage || isBadCredentials) {
+          // 這種情況「不要」執行 goToLogin() 跳轉
+          // 直接顯示後端傳來的錯誤訊息即可
+          Swal.fire('驗證失敗', error.response.errorDescription || '帳號或密碼錯誤', 'error');
+          return Promise.reject(error);
+        }
+        Swal.fire({
+          icon: 'warning',
+          title: '未登入',
+          text: '請先登入',
+          confirmButtonText: '前往登入',
+          cancelButtonText: '取消',
+          showCancelButton: true,
+          showCloseButton: true,
+          customClass: {
+            // confirmButton: 'q-btn q-btn--standard text-white bg-primary',
+            cancelButton: 'text-white bg-negative',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            goToLogin();
+          }
+        });
+        return Promise.reject(new Error('未登入'));
+      }
+      const { errorCode, errorDescription, errors } = error.response.data || {};
+      if (errors && Object.keys(errors).length > 0) {
+        const msg = Object.entries(errors)
+          .map(([field, msg]) => `<li><strong>${field}</strong>: ${msg}</li>`)
+          .join('');
+        Swal.fire({
+          icon: 'error',
+          title: '表單驗證錯誤',
+          html: `<ul style="text-align: left; margin: 0; padding-left: 20px;">${msg}</ul>`,
+        });
+      } else if (errorCode === 306) {
+        //在未知錯誤(Exception.class)的情況下回傳java原生的錯誤訊息
+        Swal.fire('錯誤', error.response.data.error, 'error');
+      } else if (errorDescription) {
+        Swal.fire('錯誤', errorDescription, 'error');
+      } else {
+        Swal.fire('錯誤', `伺服器錯誤 (${error.response.status})`, 'error');
+      }
     } else {
       Swal.fire('錯誤', '網路錯誤，請檢查連線', 'error');
     }
-
     return Promise.reject(error);
   },
 );
-export const api = instance;
