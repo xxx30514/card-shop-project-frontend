@@ -119,7 +119,7 @@ export default configure((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Dialog', 'Loading'],
     },
 
     // animations: 'all', // --- includes all animations
@@ -226,8 +226,7 @@ export default configure((/* ctx */) => {
     bex: {
       // extendBexScriptsConf (esbuildConf) {},
       // extendBexManifestJson (json) {},
-
-      contentScripts: ['my-content-script'],
+      // contentScripts: ['my-content-script'],
     },
   };
 });
