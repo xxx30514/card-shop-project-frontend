@@ -8,7 +8,12 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'com', component: () => import('pages/CompositionAPI.vue') },
       { path: 'set', component: () => import('pages/SetupScript.vue') },
-      { path: 'hook', component: () => import('pages/LifecycleHooks.vue'), meta: { title: 'Life' }, name: 'hook' },
+      {
+        path: 'hook',
+        component: () => import('pages/LifecycleHooks.vue'),
+        meta: { title: 'Life', requiresAuth: true },
+        name: 'hook',
+      },
       {
         path: 'news',
         component: () => import('pages/NewsPage.vue'),
@@ -30,6 +35,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'pinia', component: () => import('pages/PiniaPage.vue') },
       { path: 'slot', component: () => import('pages/slot/FatherComponent.vue') },
       { path: 'scoped', component: () => import('pages/scoped_slot/FatherComponent.vue') },
+      { path: 'login', component: () => import('pages/LoginPage.vue') },
     ],
   },
   {
